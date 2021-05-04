@@ -1,13 +1,14 @@
 import pygame
 import math
+
 class Vehicle:
     def __init__(self, x=0 , y=0):
         self.position = pygame.Vector2(x, y)
-        self.velocity = pygame.Vector2(0, -0.1)
+        self.velocity = pygame.Vector2(0, -0.001)
         self.acceleration = pygame.Vector2()
         self.r = 5
-        self.maxspeed = 3
-        self.maxforce = 0.1
+        self.maxspeed = 8
+        self.maxforce = 0.2
         self.health = 100
 
     def limit(self, limit_value, vector):
@@ -29,6 +30,7 @@ class Vehicle:
         # Update location with new velocity
         self.position += self.velocity
 
+
         # Set zero acceleration
         self.acceleration = self.acceleration * 0
 
@@ -37,8 +39,7 @@ class Vehicle:
     
     def seek(self, target):
         desired = target - self.position
-        desired.normalize()
-        desired *= self.maxspeed
+        desired = desired.normalize() * self.maxspeed
         steer = desired - self.velocity
         #steer.scale_to_length(self.maxforce)
         steer = self.limit(self.maxforce, steer)
