@@ -8,8 +8,8 @@ class Vehicle:
         self.velocity = pygame.Vector2(0, -0.001)
         self.acceleration = pygame.Vector2()
         self.r = 5
-        self.maxspeed = 5
-        self.maxforce = 0.2
+        self.maxspeed = 4
+        self.maxforce = 0.1
         self.health = 100
 
     def limit(self, limit_value, vector):
@@ -54,6 +54,8 @@ class Vehicle:
 
 '''v1 = Vehicle()
 v = pygame.Vector2(1, 1)
+angle = v.as_polar()
+print(angle)
 limit = 10
 for i in range(10):
     v1.position += v
