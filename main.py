@@ -38,11 +38,10 @@ while continua:
     v1.update()
     window.fill(gray)
     #pygame.draw.circle(window, white, v1.position, v1.r)
-    health_i = 3
-    vehicles[health_i] = pygame.transform.scale(vehicles_base[health_i], (28, 15))
 
-    '''vehicle_img = vehicle_img_temp.get_rect()
-    vehicle_img0 = vehicle_img0_temp.get_rect()'''
+    health_i = 0
+    k = float(v1.r)
+    vehicles[health_i] = pygame.transform.scale(vehicles_base[health_i], (int(k * 30), int(k * 16)))
 
     teta = v1.velocity.as_polar()
     teta = teta[1]

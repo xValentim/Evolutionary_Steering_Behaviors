@@ -1,5 +1,6 @@
 import pygame
 import math
+import random
 from values import *
 
 class Vehicle:
@@ -7,7 +8,7 @@ class Vehicle:
         self.position = pygame.Vector2(x, y)
         self.velocity = pygame.Vector2(0, -0.001)
         self.acceleration = pygame.Vector2()
-        self.r = 5
+        self.r = 0.75 + random.random() / 4
         self.maxspeed = 4
         self.maxforce = 0.1
         self.health = 100
@@ -39,18 +40,21 @@ class Vehicle:
         self.acceleration += force
     
     def seek(self, target):
+        # Calculate desired
         desired = target - self.position
         desired = desired.normalize() * self.maxspeed
+
+        # Calculate steer (Craig Raynolds classic vehicle)
+        # steering = desired - velocity
         steer = desired - self.velocity
-        #steer.scale_to_length(self.maxforce)
+
+        # Limit steer
         steer = self.limit(self.maxforce, steer)
+
+        # Apply force
         self.applyForce(steer)
 
-    def steering(self):
-        pass
-        
 
-# steering = desired - velocity
 
 '''v1 = Vehicle()
 v = pygame.Vector2(1, 1)
