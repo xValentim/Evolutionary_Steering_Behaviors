@@ -3,8 +3,9 @@ import numpy
 from vehicle import *
 
 pygame.init()
-largura = 600
-altura = 300
+largura = 640
+altura = 320
+
 gray = (51, 51, 51)
 black = (0, 0, 0)
 white = (255, 255, 255)
