@@ -1,5 +1,6 @@
 import pygame
 import math
+from values import *
 
 class Vehicle:
     def __init__(self, x=0 , y=0):
@@ -7,7 +8,7 @@ class Vehicle:
         self.velocity = pygame.Vector2(0, -0.001)
         self.acceleration = pygame.Vector2()
         self.r = 5
-        self.maxspeed = 8
+        self.maxspeed = 5
         self.maxforce = 0.2
         self.health = 100
 

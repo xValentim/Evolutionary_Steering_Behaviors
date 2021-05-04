@@ -7,10 +7,8 @@ pygame.init()
 u = pygame.Vector2()
 v = pygame.Vector2(1, 1)
 
-
 # Dots green : Food
 # Dots red : Poison
-
 
 relogio = pygame.time.Clock()
 window = pygame.display.set_mode((largura, altura))
