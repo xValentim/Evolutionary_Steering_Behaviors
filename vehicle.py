@@ -9,7 +9,7 @@ class Vehicle:
         self.velocity = pygame.Vector2(0, -0.001)
         self.acceleration = pygame.Vector2()
         self.r = random.uniform(0.5, 1.5)
-        self.maxspeed = 4
+        self.maxspeed = 5
         self.maxforce = 0.2
         self.health = 1
 
@@ -29,8 +29,8 @@ class Vehicle:
         #return (vector.normalize()) * limit_value
 
     def behaviors(self, good, bad):
-        steerG = self.eat(good)
-        steerB = self.eat(bad)
+        steerG = self.eat(good, 0.5)
+        steerB = self.eat(bad, -0.1)
 
         steerG *= self.dna[0]
         steerB *= self.dna[1]
@@ -38,7 +38,7 @@ class Vehicle:
         self.applyForce(steerG)
         self.applyForce(steerB)
 
-    def eat(self, lista):
+    def eat(self, lista, nutrition):
         # list of foods
         record = largura
         record_2 = record * record
@@ -55,14 +55,18 @@ class Vehicle:
         # Eat food and remove food of list
         if record_2 < Radius_eat * Radius_eat:
             lista.pop(closest)
+            self.health += nutrition
         elif closest > -1:
             return self.seek(lista[closest])
         return pygame.Vector2()
         
         
+    def dead(self):
+        return self.health < 0
+
     # Update location
     def update(self):
-        
+
         self.health -= 0.01
 
         # Update velocity

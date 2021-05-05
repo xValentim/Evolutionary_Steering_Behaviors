@@ -41,15 +41,36 @@ while continua:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 continua = False
-        target = pygame.mouse.get_pos()
+            if event.key == pygame.K_f:
+                for i in range(5):
+                    x = random.randint(1, largura)
+                    y = random.randint(1, altura)
+                    food.append(pygame.Vector2(x, y))
+            if event.key == pygame.K_p:
+                for i in range(5):
+                    x = random.randint(1, largura)
+                    y = random.randint(1, altura)
+                    poison.append(pygame.Vector2(x, y))
+            if event.key == pygame.K_v:
+                for i in range(5):
+                    x = random.randint(1, largura)
+                    y = random.randint(1, altura)
+                    vehicles_list.append(Vehicle(x, y))
+
+        #target = pygame.mouse.get_pos()
         
     window.fill(gray)
 
-    for v1 in vehicles_list:
+    #for i in range(len(vehicles_list)):
+    i = 0
+    while i < len(vehicles_list):
+        v1 = vehicles_list[i]
         v1.behaviors(food, poison)
         v1.update()
 
-        health_i = 0
+        health_i = round(v1.health) + 1
+        if health_i < 1:
+            health_i = 1
         k = float(v1.r)
         vehicles[health_i] = pygame.transform.scale(vehicles_base[health_i], (int(k * 30), int(k * 16)))
 
@@ -66,13 +87,20 @@ while continua:
         pygame.draw.line(window, green, v1.position, (v1.position + v1.velocity.normalize() * v1.dna[0] * 10), width=1)
         pygame.draw.line(window, red, v1.position, (v1.position + v1.velocity.normalize() * v1.dna[1] * 10), width=1)
 
+        print(v1.health)
+
+        if v1.dead():
+            del(vehicles_list[i])
+        i += 1
+
+
     for i in range(len(food)):
         pygame.draw.circle(window, green, food[i], 2)
     
     for i in range(len(poison)):
         pygame.draw.circle(window, red, poison[i], 2)
         
-    relogio.tick(65)
+    relogio.tick(45)
     pygame.display.update()
 
 pygame.quit()

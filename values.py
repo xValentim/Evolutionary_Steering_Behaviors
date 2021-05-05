@@ -22,13 +22,14 @@ vehicle_img7 = pygame.image.load("Evolutionary_Steering_Behaviors/imgs_vehicles/
 
 vehicles_base = [
     vehicle_img0,
-    vehicle_img1,
-    vehicle_img2,
-    vehicle_img3,
-    vehicle_img4,
-    vehicle_img5,
+    vehicle_img7,
     vehicle_img6,
-    vehicle_img7
+    vehicle_img5,
+    vehicle_img4,
+    vehicle_img3,
+    vehicle_img2,
+    vehicle_img1,
+    vehicle_img1
 ]
 
 vehicles = list(vehicles_base)
