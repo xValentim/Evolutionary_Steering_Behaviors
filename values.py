@@ -1,6 +1,6 @@
 import pygame
-largura = 640
-altura = 320
+largura = 900
+altura = 450
 
 gray = (51, 51, 51)
 black = (0, 0, 0)
@@ -17,6 +17,8 @@ vehicle_img3 = pygame.image.load("Evolutionary_Steering_Behaviors/imgs_vehicles/
 vehicle_img4 = pygame.image.load("Evolutionary_Steering_Behaviors/imgs_vehicles/vehicle_health4.png")
 vehicle_img5 = pygame.image.load("Evolutionary_Steering_Behaviors/imgs_vehicles/vehicle_health5.png")
 vehicle_img6 = pygame.image.load("Evolutionary_Steering_Behaviors/imgs_vehicles/vehicle_health6.png")
+vehicle_img7 = pygame.image.load("Evolutionary_Steering_Behaviors/imgs_vehicles/vehicle_health6.png")
+
 
 vehicles_base = [
     vehicle_img0,
@@ -26,7 +28,7 @@ vehicles_base = [
     vehicle_img4,
     vehicle_img5,
     vehicle_img6,
+    vehicle_img7
 ]
 
 vehicles = list(vehicles_base)
-
