@@ -42,12 +42,12 @@ while continua:
             if event.key == pygame.K_ESCAPE:
                 continua = False
             if event.key == pygame.K_f:
-                for i in range(5):
+                for i in range(50):
                     x = random.randint(1, largura)
                     y = random.randint(1, altura)
                     food.append(pygame.Vector2(x, y))
             if event.key == pygame.K_p:
-                for i in range(5):
+                for i in range(50):
                     x = random.randint(1, largura)
                     y = random.randint(1, altura)
                     poison.append(pygame.Vector2(x, y))
@@ -71,6 +71,8 @@ while continua:
         health_i = round(v1.health) + 1
         if health_i < 1:
             health_i = 1
+        elif health_i > 7:
+            health_i = 7
         k = float(v1.r)
         vehicles[health_i] = pygame.transform.scale(vehicles_base[health_i], (int(k * 30), int(k * 16)))
 
@@ -100,7 +102,7 @@ while continua:
     for i in range(len(poison)):
         pygame.draw.circle(window, red, poison[i], 2)
         
-    relogio.tick(45)
+    relogio.tick(60)
     pygame.display.update()
 
 pygame.quit()

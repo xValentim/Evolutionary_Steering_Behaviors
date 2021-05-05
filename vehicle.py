@@ -10,7 +10,7 @@ class Vehicle:
         self.acceleration = pygame.Vector2()
         self.r = random.uniform(0.5, 1.5)
         self.maxspeed = 5
-        self.maxforce = 0.2
+        self.maxforce = 0.4
         self.health = 1
 
         #self.dna = [3, -3]
@@ -67,7 +67,7 @@ class Vehicle:
     # Update location
     def update(self):
 
-        self.health -= 0.01
+        self.health -= 0.001
 
         # Update velocity
         self.velocity += self.acceleration
