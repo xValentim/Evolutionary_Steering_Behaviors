@@ -67,18 +67,21 @@ while continua:
     window.fill(gray)
     pygame.draw.line(window, black, (0, altura + 5), (largura, altura + 5), width=5)
 
+    #TODO: Function Insert food
     z = random.random()
-    if z < 0.05:
+    if z < 0.1:
         x = random.randint(1, largura)
         y = random.randint(1, altura)
         food.append(pygame.Vector2(x, y))
 
+    #TODO: Function Insert posion
     z = random.random()
-    if z < 0.03:
+    if z < 0.06:
         x = random.randint(1, largura)
         y = random.randint(1, altura)
         poison.append(pygame.Vector2(x, y))
     
+    #TODO: Projeto final
     if t >= t_jump:
         for i in range(5):
             x = random.randint(1, largura)
@@ -132,9 +135,10 @@ while continua:
     texto(f"V3: {min(p1.distancias):.5f}", white, 20, 10, altura - 40)
     texto(f"V4: {max(p1.distancias):.5f}", white, 20, 10, altura - 20)'''
 
+    #TODO: Draw foods
     for i in range(len(food)):
         pygame.draw.circle(window, green, food[i], 1)
-    
+    #TODO: Draw poison
     for i in range(len(poison)):
         pygame.draw.circle(window, red, poison[i], 1)
         

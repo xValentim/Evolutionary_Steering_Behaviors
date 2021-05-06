@@ -6,25 +6,26 @@ from values import *
 class Vehicle:
     def __init__(self, x=0 , y=0):
         self.position = pygame.Vector2(x, y)
-        self.velocity = pygame.Vector2(0, -0.001)
+        self.velocity = pygame.Vector2(random.uniform(-2, 2), random.uniform(-2, 2))
         self.acceleration = pygame.Vector2()
         #self.r = random.uniform(0.25, 0.8)
         self.r = 0.8
-        self.maxspeed = 2
-        self.maxforce = 0.4
+        self.maxspeed = 3
+        self.maxforce = 0.2
         self.health = 4
         # Peso food
         a = random.uniform(-2, 2)
         # Peso poison
         b = random.uniform(-2, 2)
         # Food Perception
-        c = random.uniform(10, 100)
+        c = random.uniform(0, 70)
         # Poison Perception
-        d = random.uniform(10, 100)
+        d = random.uniform(0, 70)
         self.dna = [a, b, c, d]
         #self.skin = round(a + b)
         #print(self.skin)
 
+    #TODO: Projeto final
     def limit(self, limit_value, vector):
         if vector.magnitude_squared() > limit_value * limit_value:
             return (vector.normalize()) * limit_value
@@ -33,16 +34,16 @@ class Vehicle:
         #return (vector.normalize()) * limit_value
 
     def behaviors(self, good, bad):
-        steerG = self.eat(good, 0.5)
-        steerB = self.eat(bad, -0.1)
+        steerG = self.eat(good, 0.5, self.dna[2])
+        steerB = self.eat(bad, -0.1, self.dna[3])
 
-        steerG *= self.dna[0] / 15
-        steerB *= self.dna[1] / 15
+        steerG *= self.dna[0] 
+        steerB *= self.dna[1] 
 
         self.applyForce(steerG)
         self.applyForce(steerB)
 
-    def eat(self, lista, nutrition):
+    def eat(self, lista, nutrition, PerceptionRadius):
         # list of foods
         record = largura
         record_2 = record * record
@@ -52,7 +53,7 @@ class Vehicle:
         # List of food
         for i in range(len(lista)):
             d_2 = (lista[i] - self.position).magnitude_squared()
-            if d_2 < record_2:
+            if d_2 < record_2 and d_2 < PerceptionRadius * PerceptionRadius:
                 record_2 = d_2
                 closest = i
              
@@ -66,14 +67,15 @@ class Vehicle:
             return self.seek(lista[closest])
         return pygame.Vector2()
         
-        
+    #TODO: Projeto final
     def dead(self):
         return self.health < 0
 
+    #TODO: Projeto final
     # Update location
     def update(self):
 
-        self.health -= 0.0005
+        self.health -= 0.009
 
         # Boundary condition (depende da aceleração)
         self.boundary()
@@ -112,6 +114,7 @@ class Vehicle:
             steer = self.limit(self.maxforce, steer)
             self.applyForce(steer)
 
+    #TODO: Projeto final
     def periodic_boundary(self):
         self.position.x = self.position.x % largura
         self.position.y = self.position.y % altura
@@ -145,4 +148,3 @@ for i in range(10):
     v1.position += v
     v1.position = v1.limit(limit, v1.position)
     print(v1.position)'''
-
