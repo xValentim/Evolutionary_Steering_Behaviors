@@ -10,10 +10,10 @@ v = pygame.Vector2(1, 1)
 
 # Dots green : Food
 # Dots red : Poison
-
-
+t_jump = 1000
+t = 0
 relogio = pygame.time.Clock()
-window = pygame.display.set_mode((largura, altura))
+window = pygame.display.set_mode((largura, altura + tamanho_barra))
 pygame.display.set_caption("Evolutionary Steering Behaviors")
 window.fill(gray)
 vehicles_list = []
@@ -31,6 +31,11 @@ for i in range(50):
     x = random.randint(1, largura)
     y = random.randint(1, altura)
     poison.append(pygame.Vector2(x, y))
+
+def texto(msg, cor, tam, x, y):
+    font = pygame.font.SysFont(None, tam)
+    texto1 = font.render(msg, True, cor)
+    window.blit(texto1, [x, y])
 
 continua = True
 while continua:
@@ -60,10 +65,38 @@ while continua:
         #target = pygame.mouse.get_pos()
         
     window.fill(gray)
+    pygame.draw.line(window, black, (0, altura + 5), (largura, altura + 5), width=5)
+
+    z = random.random()
+    if z < 0.05:
+        x = random.randint(1, largura)
+        y = random.randint(1, altura)
+        food.append(pygame.Vector2(x, y))
+
+    z = random.random()
+    if z < 0.03:
+        x = random.randint(1, largura)
+        y = random.randint(1, altura)
+        poison.append(pygame.Vector2(x, y))
+    
+    if t >= t_jump:
+        for i in range(5):
+            x = random.randint(1, largura)
+            y = random.randint(1, altura)
+            vehicles_list.append(Vehicle(x, y))
+        t = 0
+    t += 1
+
 
     #for i in range(len(vehicles_list)):
     i = 0
+    '''try:
+        referencia = vehicles_list[0].health
+        lista_health = []
+    except:
+        referencia = None'''
     while i < len(vehicles_list):
+
         v1 = vehicles_list[i]
         v1.behaviors(food, poison)
         v1.update()
@@ -86,21 +119,24 @@ while continua:
         
         window.blit(vehicles[health_i], rect)
 
-        pygame.draw.line(window, green, v1.position, (v1.position + v1.velocity.normalize() * v1.dna[0] * 10), width=1)
-        pygame.draw.line(window, red, v1.position, (v1.position + v1.velocity.normalize() * v1.dna[1] * 10), width=1)
-
-        print(v1.health)
+        to_draw_dna(window, v1)
+        
+        #print(v1.health)
 
         if v1.dead():
             del(vehicles_list[i])
         i += 1
 
+    '''texto(f"V1: Health={velocidade:.7f} Dna={}", white, 20, 10, altura - 80)
+    texto(f"V2: {velocidade:.7f}", white, 20, 10, altura - 60)
+    texto(f"V3: {min(p1.distancias):.5f}", white, 20, 10, altura - 40)
+    texto(f"V4: {max(p1.distancias):.5f}", white, 20, 10, altura - 20)'''
 
     for i in range(len(food)):
-        pygame.draw.circle(window, green, food[i], 2)
+        pygame.draw.circle(window, green, food[i], 1)
     
     for i in range(len(poison)):
-        pygame.draw.circle(window, red, poison[i], 2)
+        pygame.draw.circle(window, red, poison[i], 1)
         
     relogio.tick(60)
     pygame.display.update()

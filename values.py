@@ -1,6 +1,7 @@
 import pygame
 largura = 900
 altura = 450
+tamanho_barra = 200
 
 gray = (51, 51, 51)
 black = (0, 0, 0)
@@ -33,3 +34,9 @@ vehicles_base = [
 ]
 
 vehicles = list(vehicles_base)
+
+def to_draw_dna(window, v1):
+    pygame.draw.line(window, green, v1.position, (v1.position + v1.velocity.normalize() * v1.dna[0] * 10), width=1)
+    pygame.draw.line(window, red, v1.position, (v1.position + v1.velocity.normalize() * v1.dna[1] * 10), width=1)
+    pygame.draw.circle(window, green, v1.position, int(v1.dna[2]), width=1)
+    pygame.draw.circle(window, red, v1.position, int(v1.dna[3]), width=1)

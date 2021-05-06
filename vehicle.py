@@ -8,16 +8,20 @@ class Vehicle:
         self.position = pygame.Vector2(x, y)
         self.velocity = pygame.Vector2(0, -0.001)
         self.acceleration = pygame.Vector2()
-        self.r = random.uniform(0.5, 1.5)
-        self.maxspeed = 5
+        #self.r = random.uniform(0.25, 0.8)
+        self.r = 0.8
+        self.maxspeed = 2
         self.maxforce = 0.4
-        self.health = 1
-
-        #self.dna = [3, -3]
-        a = random.uniform(-5, 5)
-        b = random.uniform(-5, 5)
-        print(a, b)
-        self.dna = [a, b]
+        self.health = 4
+        # Peso food
+        a = random.uniform(-2, 2)
+        # Peso poison
+        b = random.uniform(-2, 2)
+        # Food Perception
+        c = random.uniform(10, 100)
+        # Poison Perception
+        d = random.uniform(10, 100)
+        self.dna = [a, b, c, d]
         #self.skin = round(a + b)
         #print(self.skin)
 
@@ -32,8 +36,8 @@ class Vehicle:
         steerG = self.eat(good, 0.5)
         steerB = self.eat(bad, -0.1)
 
-        steerG *= self.dna[0]
-        steerB *= self.dna[1]
+        steerG *= self.dna[0] / 15
+        steerB *= self.dna[1] / 15
 
         self.applyForce(steerG)
         self.applyForce(steerB)
@@ -56,6 +60,8 @@ class Vehicle:
         if record_2 < Radius_eat * Radius_eat:
             lista.pop(closest)
             self.health += nutrition
+            if self.health >= 6:
+                self.health = 6
         elif closest > -1:
             return self.seek(lista[closest])
         return pygame.Vector2()
@@ -67,7 +73,10 @@ class Vehicle:
     # Update location
     def update(self):
 
-        self.health -= 0.001
+        self.health -= 0.0005
+
+        # Boundary condition (depende da aceleração)
+        self.boundary()
 
         # Update velocity
         self.velocity += self.acceleration
@@ -78,13 +87,34 @@ class Vehicle:
         # Update location with new velocity
         self.position += self.velocity
 
-        # Boundary condition
-        self.position.x = self.position.x % largura
-        self.position.y = self.position.y % altura
-
-
+        # Boundary condition (depende da posição)
+        #self.periodic_boundary()
+        
+    
         # Set zero acceleration
         self.acceleration = self.acceleration * 0
+
+    def boundary(self):
+        d = 1
+        desired = pygame.Vector2()
+        if self.position.x < d:
+            desired = pygame.Vector2(self.maxspeed, self.velocity.y)
+        elif self.position.x > largura - d:
+            desired = pygame.Vector2(-self.maxspeed, self.velocity.y)
+        if self.position.y < d:
+            desired = pygame.Vector2(self.velocity.x, self.maxspeed)
+        elif self.position.y > altura - d:
+            desired = pygame.Vector2(self.velocity.x, -self.maxspeed)
+
+        if desired.magnitude_squared() > 0:
+            desired = desired.normalize() * self.maxspeed
+            steer = desired - self.velocity
+            steer = self.limit(self.maxforce, steer)
+            self.applyForce(steer)
+
+    def periodic_boundary(self):
+        self.position.x = self.position.x % largura
+        self.position.y = self.position.y % altura
 
     def applyForce(self, force):
         self.acceleration += force
