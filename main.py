@@ -90,18 +90,34 @@ while continua:
         t = 0
     #t += 1
 
+    lista_de_vetores = sierpinski_carpet()
+    aumento = 50
+    soma_total_x = 0
+    soma_total_y = 0
+    qtde_total = 0
+    for i in range(len(lista_de_vetores)):
+        lista_de_vetores[i].x = lista_de_vetores[i].x * aumento #+ largura / 4
+        lista_de_vetores[i].y = lista_de_vetores[i].y * aumento #+ altura / 4
+        #pygame.draw.rect(window, black, (lista_de_vetores[i].x, lista_de_vetores[i].y, aumento, aumento), 0)
+        soma_total_x += lista_de_vetores[i].x
+        soma_total_y += lista_de_vetores[i].y
+        qtde_total += 1
+    centro_x = soma_total_x / qtde_total
+    centro_y = soma_total_y / qtde_total
+    centro_sc = pygame.Vector2(centro_x, centro_y)
+    centro = pygame.Vector2(largura / 2, altura / 2)
+    vetor_de_translação = centro - centro_sc
 
-    #for i in range(len(vehicles_list)):
+    for i in range(len(lista_de_vetores)):
+        lista_de_vetores[i] += vetor_de_translação #+ largura / 4
+        pygame.draw.rect(window, gray2, (lista_de_vetores[i].x, lista_de_vetores[i].y, aumento / 3, aumento / 3), 0)
+
     i = 0
-    '''try:
-        referencia = vehicles_list[0].health
-        lista_health = []
-    except:
-        referencia = None'''
     while i < len(vehicles_list):
 
         v1 = vehicles_list[i]
         v1.behaviors(food, poison)
+        v1.wall(lista_de_vetores)
         v1.update()
 
         newVehicle = v1.clone(0.001) # Argument is probability to clone
@@ -139,23 +155,7 @@ while continua:
     texto(f"V3: {min(p1.distancias):.5f}", white, 20, 10, altura - 40)
     texto(f"V4: {max(p1.distancias):.5f}", white, 20, 10, altura - 20)'''
 
-    lista_de_vetores = sierpinski_carpet()
-    aumento = 30
-    soma_total_x = 0
-    soma_total_y = 0
-    qtde_total = 0
-    for i in range(len(lista_de_vetores)):
-        lista_de_vetores[i].x = lista_de_vetores[i].x * aumento #+ largura / 4
-        lista_de_vetores[i].y = lista_de_vetores[i].y * aumento #+ altura / 4
-        pygame.draw.rect(window, black, (lista_de_vetores[i].x, lista_de_vetores[i].y, aumento, aumento), 0)
-        soma_total_x += lista_de_vetores[i].x
-        soma_total_y += lista_de_vetores[i].y
-        qtde_total += 1
-    centro_x = soma_total_x / qtde_total
-    centro_y = soma_total_y / qtde_total
-    centro_sc = pygame.Vector2(centro_x, centro_y)
-    
-    
+        
     #pygame.draw.rect(window, green, (centro_sc.x, centro_sc.y, aumento, aumento), 0)
 
 
