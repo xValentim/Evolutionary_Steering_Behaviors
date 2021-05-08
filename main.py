@@ -17,7 +17,7 @@ window = pygame.display.set_mode((largura, altura + tamanho_barra))
 pygame.display.set_caption("Evolutionary Steering Behaviors")
 window.fill(gray)
 vehicles_list = []
-for i in range(10):
+for i in range(50):
     x = random.randint(1, largura)
     y = random.randint(1, altura)
     vehicles_list.append(Vehicle(x, y))
@@ -76,7 +76,7 @@ while continua:
 
     #TODO: Function Insert posion
     z = random.random()
-    if z < 0.06:
+    if z < 0.1:
         x = random.randint(1, largura)
         y = random.randint(1, altura)
         poison.append(pygame.Vector2(x, y))
@@ -88,7 +88,7 @@ while continua:
             y = random.randint(1, altura)
             vehicles_list.append(Vehicle(x, y))
         t = 0
-    t += 1
+    #t += 1
 
 
     #for i in range(len(vehicles_list)):
@@ -103,6 +103,10 @@ while continua:
         v1 = vehicles_list[i]
         v1.behaviors(food, poison)
         v1.update()
+
+        newVehicle = v1.clone(0.001) # Argument is probability to clone
+        if newVehicle != None:
+            vehicles_list.append(newVehicle)
 
         health_i = round(v1.health) + 1
         if health_i < 1:
@@ -121,12 +125,12 @@ while continua:
         rect.center = v1.position
         
         window.blit(vehicles[health_i], rect)
-
         to_draw_dna(window, v1)
         
         #print(v1.health)
 
         if v1.dead():
+            food.append(v1.position)
             del(vehicles_list[i])
         i += 1
 

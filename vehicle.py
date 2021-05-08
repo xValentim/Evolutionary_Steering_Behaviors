@@ -4,7 +4,7 @@ import random
 from values import *
 
 class Vehicle:
-    def __init__(self, x=0 , y=0):
+    def __init__(self, x=0 , y=0, dna=[]):
         self.position = pygame.Vector2(x, y)
         self.velocity = pygame.Vector2(random.uniform(-2, 2), random.uniform(-2, 2))
         self.acceleration = pygame.Vector2()
@@ -13,17 +13,37 @@ class Vehicle:
         self.maxspeed = 3
         self.maxforce = 0.2
         self.health = 4
-        # Peso food
-        a = random.uniform(-2, 2)
-        # Peso poison
-        b = random.uniform(-2, 2)
-        # Food Perception
-        c = random.uniform(0, 70)
-        # Poison Perception
-        d = random.uniform(0, 70)
-        self.dna = [a, b, c, d]
-        #self.skin = round(a + b)
-        #print(self.skin)
+        mr = 0.01
+        if dna == []:
+            # Peso food
+            A = random.uniform(-2, 2)
+            # Peso poison
+            B = random.uniform(-2, 2)
+            # Food Perception
+            C = random.uniform(0, 70)
+            # Poison Perception
+            D = random.uniform(0, 70)
+            #d = 0
+            self.dna = [A, B, C, D]
+            #self.skin = round(a + b)
+            #print(self.skin)
+        else:
+            self.dna = []
+            self.dna.append(dna[0])
+            if random.random() < mr:
+                self.dna[0] += random.uniform(-0.1, 0.1)
+                
+            self.dna.append(dna[1])
+            if random.random() < mr:
+                self.dna[1] += random.uniform(-0.1, 0.1)
+
+            self.dna.append(dna[2])
+            if random.random() < mr:
+                self.dna[2] += random.uniform(-10, 10)
+
+            self.dna.append(dna[3])
+            if random.random() < mr:
+                self.dna[3] += random.uniform(-10, 10)
 
     #TODO: Projeto final
     def limit(self, limit_value, vector):
@@ -34,37 +54,52 @@ class Vehicle:
         #return (vector.normalize()) * limit_value
 
     def behaviors(self, good, bad):
-        steerG = self.eat(good, 0.5, self.dna[2])
-        steerB = self.eat(bad, -0.1, self.dna[3])
+        steerG = self.eat(good, 0.3, self.dna[2])
+        steerB = self.eat(bad, -0.2, self.dna[3])
 
-        steerG *= self.dna[0] 
-        steerB *= self.dna[1] 
+        steerG *= self.dna[0] / 1.5
+        steerB *= self.dna[1] / 1.5
 
         self.applyForce(steerG)
         self.applyForce(steerB)
+
+    def clone(self, z):
+        if random.random() < z:
+            return Vehicle(self.position.x, self.position.y, self.dna)
+        else:
+            return None
 
     def eat(self, lista, nutrition, PerceptionRadius):
         # list of foods
         record = largura
         record_2 = record * record
-        Radius_eat = 10
-        closest = -1
+        Radius_eat = self.maxspeed
+        closest = None
 
         # List of food
-        for i in range(len(lista)):
+        i = 0
+        #for i in range(len(lista)):
+        while i < len(lista):
             d_2 = (lista[i] - self.position).magnitude_squared()
-            if d_2 < record_2 and d_2 < PerceptionRadius * PerceptionRadius:
+            if d_2 < Radius_eat * Radius_eat:
+                lista.pop(i) ##
+                self.health += nutrition
+                if self.health >= 6:
+                    self.health = 6
+            elif d_2 < record_2 and d_2 < PerceptionRadius * PerceptionRadius:
                 record_2 = d_2
-                closest = i
-             
+                closest = lista[i]
+            i += 1
         # Eat food and remove food of list
-        if record_2 < Radius_eat * Radius_eat:
-            lista.pop(closest)
+        '''if record_2 < Radius_eat * Radius_eat:
+            lista.pop(closest) ##
             self.health += nutrition
             if self.health >= 6:
-                self.health = 6
-        elif closest > -1:
-            return self.seek(lista[closest])
+                self.health = 6'''
+
+        if closest != None:
+            return self.seek(closest)
+
         return pygame.Vector2()
         
     #TODO: Projeto final
@@ -75,7 +110,7 @@ class Vehicle:
     # Update location
     def update(self):
 
-        self.health -= 0.009
+        self.health -= 0.005
 
         # Boundary condition (depende da aceleração)
         self.boundary()
