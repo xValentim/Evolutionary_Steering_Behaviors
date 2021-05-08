@@ -5,11 +5,13 @@ altura = 450
 tamanho_barra = 200
 
 gray = (51, 51, 51)
+gray2 = (41, 41, 41)
 black = (0, 0, 0)
 white = (255, 255, 255)
 red = (250, 0, 0)
 green = (0, 250, 0)
 blue = (0, 0, 250)
+cyan = (0, 15, 150)
 
 vehicle_img = pygame.image.load("Evolutionary_Steering_Behaviors/imgs_vehicles/vehicle_none.png")
 vehicle_img0 = pygame.image.load("Evolutionary_Steering_Behaviors/imgs_vehicles/vehicle_none.png")

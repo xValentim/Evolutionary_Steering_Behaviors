@@ -32,7 +32,7 @@ class Vehicle:
             self.dna.append(dna[0])
             if random.random() < mr:
                 self.dna[0] += random.uniform(-0.1, 0.1)
-                
+
             self.dna.append(dna[1])
             if random.random() < mr:
                 self.dna[1] += random.uniform(-0.1, 0.1)
@@ -148,6 +148,22 @@ class Vehicle:
             steer = desired - self.velocity
             steer = self.limit(self.maxforce, steer)
             self.applyForce(steer)
+    
+    def wall(self, lista_de_vetores):
+        d = 10
+        d_2 = d * d
+        desired = pygame.Vector2()
+        for wall in lista_de_vetores:
+            vector_d = wall - self.position
+            distance_to_wall_2 = (vector_d).magnitude_squared()
+            if distance_to_wall_2 < d_2:
+                desired = vector_d.normalize()
+
+            if desired.magnitude_squared() > 0:
+                desired = desired.normalize() * self.maxspeed
+                steer = desired - self.velocity
+                steer = self.limit(self.maxforce, steer)
+                self.applyForce(-steer)
 
     #TODO: Projeto final
     def periodic_boundary(self):
