@@ -139,6 +139,26 @@ while continua:
     texto(f"V3: {min(p1.distancias):.5f}", white, 20, 10, altura - 40)
     texto(f"V4: {max(p1.distancias):.5f}", white, 20, 10, altura - 20)'''
 
+    lista_de_vetores = sierpinski_carpet()
+    aumento = 30
+    soma_total_x = 0
+    soma_total_y = 0
+    qtde_total = 0
+    for i in range(len(lista_de_vetores)):
+        lista_de_vetores[i].x = lista_de_vetores[i].x * aumento #+ largura / 4
+        lista_de_vetores[i].y = lista_de_vetores[i].y * aumento #+ altura / 4
+        pygame.draw.rect(window, black, (lista_de_vetores[i].x, lista_de_vetores[i].y, aumento, aumento), 0)
+        soma_total_x += lista_de_vetores[i].x
+        soma_total_y += lista_de_vetores[i].y
+        qtde_total += 1
+    centro_x = soma_total_x / qtde_total
+    centro_y = soma_total_y / qtde_total
+    centro_sc = pygame.Vector2(centro_x, centro_y)
+    
+    
+    #pygame.draw.rect(window, green, (centro_sc.x, centro_sc.y, aumento, aumento), 0)
+
+
     #TODO: Draw foods
     for i in range(len(food)):
         pygame.draw.circle(window, green, food[i], 1)
