@@ -8,7 +8,6 @@ class Vehicle:
         self.position = pygame.Vector2(x, y)
         self.velocity = pygame.Vector2(random.uniform(-2, 2), random.uniform(-2, 2))
         self.acceleration = pygame.Vector2()
-        #self.r = random.uniform(0.25, 0.8)
         self.r = 0.8
         self.maxspeed = 3
         self.maxforce = 0.2
@@ -19,12 +18,15 @@ class Vehicle:
             A = random.uniform(-2, 2)
             # Peso poison
             B = random.uniform(-2, 2)
-            # Food Perception
-            C = random.uniform(0, 70)
+            # Peso Wall
+            C = random.uniform(-2, 0)
             # Poison Perception
-            D = random.uniform(0, 70)
-            #d = 0
-            self.dna = [A, B, C, D]
+            D = random.uniform(1, 70)
+            # Food Perception
+            E = random.uniform(1, 70)
+            # Wall Perception
+            F = random.uniform(1, 70)
+            self.dna = [A, B, C, D, E, F]
             #self.skin = round(a + b)
             #print(self.skin)
         else:
@@ -36,14 +38,22 @@ class Vehicle:
             self.dna.append(dna[1])
             if random.random() < mr:
                 self.dna[1] += random.uniform(-0.1, 0.1)
-
+            
             self.dna.append(dna[2])
             if random.random() < mr:
-                self.dna[2] += random.uniform(-10, 10)
+                self.dna[2] += random.uniform(-0.1, 0.1)
 
             self.dna.append(dna[3])
             if random.random() < mr:
                 self.dna[3] += random.uniform(-10, 10)
+
+            self.dna.append(dna[4])
+            if random.random() < mr:
+                self.dna[4] += random.uniform(-10, 10)
+            
+            self.dna.append(dna[5])
+            if random.random() < mr:
+                self.dna[5] += random.uniform(-10, 10)
 
     #TODO: Projeto final
     def limit(self, limit_value, vector):
@@ -53,15 +63,18 @@ class Vehicle:
             return vector
         #return (vector.normalize()) * limit_value
 
-    def behaviors(self, good, bad):
-        steerG = self.eat(good, 0.3, self.dna[2])
-        steerB = self.eat(bad, -0.2, self.dna[3])
+    def behaviors(self, good, bad, wall):
+        steerG = self.eat(good, 0.3, self.dna[3])
+        steerB = self.eat(bad, -0.2, self.dna[4])
+        steerW = self.eat(wall, -0.2, self.dna[5], True)
 
         steerG *= self.dna[0] / 1.5
         steerB *= self.dna[1] / 1.5
+        steerW *= self.dna[2] / 1.5
 
         self.applyForce(steerG)
         self.applyForce(steerB)
+        self.applyForce(steerW)
 
     def clone(self, z):
         if random.random() < z:
@@ -69,7 +82,7 @@ class Vehicle:
         else:
             return None
 
-    def eat(self, lista, nutrition, PerceptionRadius):
+    def eat(self, lista, nutrition, PerceptionRadius, flagWall=False):
         # list of foods
         record = largura
         record_2 = record * record
@@ -82,7 +95,8 @@ class Vehicle:
         while i < len(lista):
             d_2 = (lista[i] - self.position).magnitude_squared()
             if d_2 < Radius_eat * Radius_eat:
-                lista.pop(i) ##
+                if not flagWall:
+                    lista.pop(i) ##
                 self.health += nutrition
                 if self.health >= 6:
                     self.health = 6
@@ -91,15 +105,8 @@ class Vehicle:
                 closest = lista[i]
             i += 1
         # Eat food and remove food of list
-        '''if record_2 < Radius_eat * Radius_eat:
-            lista.pop(closest) ##
-            self.health += nutrition
-            if self.health >= 6:
-                self.health = 6'''
-
         if closest != None:
             return self.seek(closest)
-
         return pygame.Vector2()
         
     #TODO: Projeto final
