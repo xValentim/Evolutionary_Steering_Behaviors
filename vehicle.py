@@ -19,6 +19,7 @@ class Vehicle:
             # Peso poison
             B = random.uniform(-2, 2)
             # Peso Wall
+            #C = random.uniform(-2, 0)
             C = random.uniform(-2, 0)
             # Poison Perception
             D = random.uniform(1, 70)
@@ -32,6 +33,7 @@ class Vehicle:
         else:
             self.dna = []
             self.dna.append(dna[0])
+            #TODO: Diminuir codigo
             if random.random() < mr:
                 self.dna[0] += random.uniform(-0.1, 0.1)
 
@@ -66,7 +68,7 @@ class Vehicle:
     def behaviors(self, good, bad, wall):
         steerG = self.eat(good, 0.3, self.dna[3])
         steerB = self.eat(bad, -0.2, self.dna[4])
-        steerW = self.eat(wall, -0.2, self.dna[5], True)
+        steerW = self.eat(wall, -0.5, self.dna[5], True)
 
         steerG *= self.dna[0] / 1.5
         steerB *= self.dna[1] / 1.5
@@ -86,7 +88,7 @@ class Vehicle:
         # list of foods
         record = largura
         record_2 = record * record
-        Radius_eat = self.maxspeed
+        Radius_eat = self.maxspeed + 2
         closest = None
 
         # List of food
@@ -96,7 +98,9 @@ class Vehicle:
             d_2 = (lista[i] - self.position).magnitude_squared()
             if d_2 < Radius_eat * Radius_eat:
                 if not flagWall:
-                    lista.pop(i) ##
+                    lista.pop(i)
+                '''else:
+                    print(sqrt(d_2))'''
                 self.health += nutrition
                 if self.health >= 6:
                     self.health = 6

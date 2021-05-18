@@ -1,9 +1,9 @@
 import pygame
 from math import *
-largura = 900
-altura = 450
+largura = 1020
+altura = 450 + 150
 tamanho_barra = 200
-dna_view = True
+dna_view = False
 
 gray = (51, 51, 51)
 gray2 = (41, 41, 41)

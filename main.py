@@ -13,7 +13,7 @@ v = pygame.Vector2(1, 1)
 t_jump = 1000
 t = 0
 relogio = pygame.time.Clock()
-window = pygame.display.set_mode((largura, altura + tamanho_barra))
+window = pygame.display.set_mode((largura, altura))
 pygame.display.set_caption("Evolutionary Steering Behaviors")
 window.fill(gray)
 # Constroi o tapete de sierpinski
@@ -59,7 +59,7 @@ while continua:
                     y = random.randint(1, altura)
                     poison.append(pygame.Vector2(x, y))
             if event.key == pygame.K_v:
-                for i in range(5):
+                for i in range(50):
                     x = random.randint(1, largura)
                     y = random.randint(1, altura)
                     vehicles_list.append(Vehicle(x, y))
@@ -69,7 +69,7 @@ while continua:
         #target = pygame.mouse.get_pos()
         
     window.fill(gray)
-    pygame.draw.line(window, black, (0, altura + 5), (largura, altura + 5), width=5)
+    #pygame.draw.line(window, black, (tamanho_barra, 0), (tamanho_barra, altura), width=3)
 
     #TODO: Function Insert food
     z = random.random()
